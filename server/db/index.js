@@ -11,10 +11,10 @@ const { Pool } = require('pg');
 
 // If we need to change the variables, we can do that here.
 const pool = new Pool({
-  user: process.env.DATABASE_USER,
-  host: process.env.DATABASE_HOST,
-  database: process.env.DATABASE_NAME,
-  password: process.env.DATABASE_PASSWORD,
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
   port: process.env.DATABASE_PORT,
 });
 

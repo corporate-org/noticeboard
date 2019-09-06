@@ -23,6 +23,9 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY server/package*.json ./
 
+COPY docker-entrypoint.sh ./
+RUN ["chmod", "+x", "./docker-entrypoint.sh"]
+
 RUN npm install
 
 # Bundle app source
@@ -30,4 +33,5 @@ COPY server/ ./
 COPY --from=build /app/build/ /usr/src/app/public/
 
 EXPOSE 8080
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD [ "node", "./bin/www" ]
