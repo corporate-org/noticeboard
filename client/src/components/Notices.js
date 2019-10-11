@@ -66,15 +66,9 @@ export class NoticeCreator extends React.Component {
 
   render() {
     return (
-      <div>
-        <label>
-          Title:
-          <input type="text" value={this.state.title} onChange={this.handleTitleChange}/>
-        </label>
-        <label>
-          Content:
-          <input type="text" value={this.state.content} onChange={this.handleContentChange}/>
-        </label>
+      <div className="new-note">
+        <input className="title" type="text" placeholder="Title" value={this.state.title} onChange={this.handleTitleChange} />
+        <textarea className="content" placeholder="Enter your note here..." value={this.state.content} onChange={this.handleContentChange}></textarea>
         <button onClick={this.handleSubmit}>Post Notice</button>
       </div>
     );
