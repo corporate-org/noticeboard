@@ -1,5 +1,17 @@
 pipeline:
 
+  # This step works around the very opinionated autotagging feature in drone
+  # http://plugins.drone.io/drone-plugins/drone-docker/#autotag
+  preserve-git-tags:
+    image: bash
+    commands:
+      # Check if the commit refrence is a tag, if it is write the tag to the .tags file used by drone in the next step
+      - echo "[[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]]"
+      - bash -c "[[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]] && echo success || echo fail"
+      - bash -c "([[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]] && echo \"${DRONE_COMMIT_REF#refs/tags/}\" > .tags && echo \"Git tag '${DRONE_COMMIT_REF#refs/tags/}' written to '.tags' file.\") || echo \"Commit ref '${DRONE_COMMIT_REF}' is not a git tag. No '.tags' file written.\""
+    when:
+      event: [tag]
+
   # This step pushes your image to the registry. You can use the default Walhall registry or change the credentials in Drone (drone.walhall.io) to use your own Docker registry,
   build-docker-image-tag:
     image: plugins/docker
@@ -11,9 +23,8 @@ pipeline:
       from_secret: DOCKER_USERNAME # Your registry username
     password:
       from_secret: DOCKER_PASSWORD # Your registry password
-    auto_tag: true
     insecure: true
     file: Dockerfile
     when:
-      event: [push, tag]
+      event: [tag]
       status: [success]
