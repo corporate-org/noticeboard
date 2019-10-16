@@ -6,9 +6,9 @@ pipeline:
     image: bash
     commands:
       # Check if the commit refrence is a tag, if it is write the tag to the .tags file used by drone in the next step
-      - [[ "${DRONE_COMMIT_REF}" == "refs/tags/"* ]] && echo "${DRONE_COMMIT_REF#refs/tags/}" > .tags
+      - [[ "${DRONE_COMMIT_REF}" == "refs/tags/"* ]] && echo "${DRONE_COMMIT_REF#refs/tags/}" > .tags && echo "Git tag '${DRONE_COMMIT_REF#refs/tags/}' written to '.tags' file."
     when:
-      event: [tag]
+      event: [push, tag]
 
   # This step pushes your image to the registry. You can use the default Walhall registry or change the credentials in Drone (drone.walhall.io) to use your own Docker registry,
   build-docker-image-tag:
@@ -24,5 +24,5 @@ pipeline:
     insecure: true
     file: Dockerfile
     when:
-      event: [tag]
+      event: [push, tag]
       status: [success]
