@@ -6,7 +6,7 @@ pipeline:
     image: bash
     commands:
       # Check if the commit refrence is a tag, if it is write the tag to the .tags file used by drone in the next step
-      - "[[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]] && echo \"${DRONE_COMMIT_REF#refs/tags/}\" > .tags && echo \"Git tag '${DRONE_COMMIT_REF#refs/tags/}' written to '.tags' file.\""
+      - eval "([[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]] && echo \"${DRONE_COMMIT_REF#refs/tags/}\" > .tags && echo \"Git tag '${DRONE_COMMIT_REF#refs/tags/}' written to '.tags' file.\") || echo \"Commit ref '${DRONE_COMMIT_REF}' is not a git tag. No '.tags' file written.\""
     when:
       event: [tag]
 
