@@ -1,28 +1,25 @@
 pipeline:
 
-  # This step works around the very opinionated autotagging feature in drone
-  # http://plugins.drone.io/drone-plugins/drone-docker/#autotag
+  # Walhall requires git tags to exactly match the image tags. This step preserves the tags.
   preserve-git-tags:
     image: bash
     commands:
-      # Check if the commit refrence is a tag, if it is write the tag to the .tags file used by drone in the next step
-      - echo "[[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]]"
-      - bash -c "[[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]] && echo success || echo fail"
-      - bash -c "([[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]] && echo \"${DRONE_COMMIT_REF#refs/tags/}\" > .tags && echo \"Git tag '${DRONE_COMMIT_REF#refs/tags/}' written to '.tags' file.\") || echo \"Commit ref '${DRONE_COMMIT_REF}' is not a git tag. No '.tags' file written.\""
+      # Check if the commit reference is a tag, if it is write the tag to the .tags file
+      - bash -c "[[ \"${DRONE_COMMIT_REF}\" == \"refs/tags/\"* ]] && echo \"${DRONE_COMMIT_REF#refs/tags/}\" > .tags"
     when:
       event: [tag]
 
-  # This step pushes your image to the registry. You can use the default Walhall registry or change the credentials in Drone (drone.walhall.io) to use your own Docker registry,
+  # This step builds the image and pushes it to the registry.
+  # Drone is configured to use the Walhall registry by default, so no need to change anything.
   build-docker-image-tag:
     image: plugins/docker
     registry:
-      from_secret: DOCKER_REGISTRY # The hostname of your registry, i.e., registry.example.com
+      from_secret: DOCKER_REGISTRY
     repo:
-      from_secret: DOCKER_REPO  # This is the complete name of your image: <DOCKER_REGISTRY>/<your organization name>/<your image name>. A valid name will be: registry.example.com/humanitec/some_name_service. It's important to comply with the Docker image restrictions. For more information read: https://docs.docker.com/engine/reference/commandline/tag/#extended-description
-    username:
-      from_secret: DOCKER_USERNAME # Your registry username
+      from_secret: DOCKER_REPO
+      from_secret: DOCKER_USERNAME
     password:
-      from_secret: DOCKER_PASSWORD # Your registry password
+      from_secret: DOCKER_PASSWORD
     insecure: true
     file: Dockerfile
     when:
