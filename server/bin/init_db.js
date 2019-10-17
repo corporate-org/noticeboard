@@ -12,5 +12,5 @@ async function createDb  () {
 try {
   createDb();
 } catch(error) {
-  console.error(error.message);
+  console.error(error);
 }

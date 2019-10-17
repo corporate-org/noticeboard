@@ -21,7 +21,7 @@ export PGPORT="$DATABASE_PORT"
 
 # Initialize the Database
 # NOTE: We already have the environmental variables configured
-# node ./bin/init_db.js
+node ./bin/init_db.js
 
 echo "[Entrypoint Script] Initialization Complete. Running command."
 # Run the command defined as CMD

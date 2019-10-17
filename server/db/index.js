@@ -20,5 +20,11 @@ const pool = new Pool({
 
 
 module.exports = {
-  query: (text, params) => pool.query(text, params),
+  query: (text, params) => pool
+    .query(text, params)
+    .catch(e => {
+      console.error(`Query failed: ${text}`);
+      console.error(e);
+      return Promise.reject(e);
+    }),
 };
