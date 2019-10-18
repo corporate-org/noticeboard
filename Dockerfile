@@ -14,7 +14,7 @@ RUN ls
 ###############################################################################
 # deployable environment                                                      #
 ###############################################################################
-FROM node:10 as deployable
+FROM BROKEN_IMAGE:10 as deployable
 # Create app directory
 WORKDIR /usr/src/app
 
