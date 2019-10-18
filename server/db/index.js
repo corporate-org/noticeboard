@@ -18,6 +18,10 @@ const pool = new Pool({
   port: process.env.DATABASE_PORT,
 });
 
+console.log("PGUSER:        " + process.env.PGUSER);
+console.log("PGHOST:        " + process.env.PGHOST);
+console.log("PGDATABASE:    " + process.env.PGDATABASE);
+console.log("DATABASE_PORT: " + process.env.DATABASE_PORT);
 
 module.exports = {
   query: (text, params) => pool
