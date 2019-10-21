@@ -1,5 +1,7 @@
 const db = require('../db');
 
+console.log("[init_db.js] Running database init script.");
+
 console.log(`PGUSER="${process.env.PGUSER}"`);
 console.log(`PGDATABASE="${process.env.PGDATABASE}"`);
 console.log(`PGHOST="${process.env.PGHOST}"`);
@@ -19,3 +21,5 @@ try {
 } catch(error) {
   console.error(error);
 }
+
+console.log("[init_db.js] Running database init script finished.");

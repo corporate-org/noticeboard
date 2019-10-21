@@ -1,7 +1,7 @@
 ###############################################################################
 # build environment                                                           #
 ###############################################################################
-FROM node:10-alpine as build
+FROM node:10 as build
 
 WORKDIR /app
 COPY client/package*.json ./
@@ -14,7 +14,7 @@ RUN ls
 ###############################################################################
 # deployable environment                                                      #
 ###############################################################################
-FROM node:10-alpine as deployable
+FROM node:10 as deployable
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -24,7 +24,7 @@ WORKDIR /usr/src/app
 COPY server/package*.json ./
 
 COPY docker-entrypoint.sh ./
-RUN ["chmod", "+x", "./docker-entrypoint.sh"]
+RUN chmod +x ./docker-entrypoint.sh
 
 RUN npm install
 
