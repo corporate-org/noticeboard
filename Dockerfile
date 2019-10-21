@@ -1,7 +1,7 @@
 ###############################################################################
 # build environment                                                           #
 ###############################################################################
-FROM node:10 as build
+FROM node:10-alpine as build
 
 WORKDIR /app
 COPY client/package*.json ./
@@ -14,7 +14,7 @@ RUN ls
 ###############################################################################
 # deployable environment                                                      #
 ###############################################################################
-FROM BROKEN_IMAGE:10 as deployable
+FROM node:10-alpine as deployable
 # Create app directory
 WORKDIR /usr/src/app
 
