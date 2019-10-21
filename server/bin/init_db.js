@@ -1,11 +1,10 @@
 const db = require('../db');
 
-console.log("[init_db.js] Running database init script.");
-
-console.log(`PGUSER="${process.env.PGUSER}"`);
-console.log(`PGDATABASE="${process.env.PGDATABASE}"`);
-console.log(`PGHOST="${process.env.PGHOST}"`);
-console.log(`DATABASE_PORT="${process.env.DATABASE_PORT}"`);
+console.log("[init_db.js] Initializing database");
+console.log(`[init_db.js] PGUSER="${process.env.PGUSER}"`);
+console.log(`[init_db.js] PGHOST="${process.env.PGHOST}"`);
+console.log(`[init_db.js] PGDATABASE="${process.env.PGDATABASE}"`);,
+console.log(`[init_db.js] DATABASE_PORT="${process.env.DATABASE_PORT}"`);
 
 async function createDb  () {
   await db.query(`SET timezone = 'utc'`);
@@ -13,7 +12,7 @@ async function createDb  () {
     id          SERIAL PRIMARY KEY,
     title       TEXT NOT NULL,
     content     TEXT NULL,
-    created_at  TIMESTAMP`);
+    created_at  TIMESTAMP)`);
 }
 
 try {
@@ -21,5 +20,4 @@ try {
 } catch(error) {
   console.error(error);
 }
-
-console.log("[init_db.js] Running database init script finished.");
+console.log("[init_db.js] Initializing complete.");
